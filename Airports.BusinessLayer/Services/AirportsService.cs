@@ -1,14 +1,22 @@
-﻿using Airports.BusinessLayer.Helpers;
+﻿using Airports.BusinessLayer.DTO;
+using Airports.BusinessLayer.Helpers;
 using Airports.DataAccess.Models.DbModels;
 using Airports.DataAccess.Repo;
-using AutoMapper;
+using Airports.Shared.Models;
+using Microsoft.Extensions.Options;
 
 namespace Airports.BusinessLayer.Services;
 
 public class AirportsService : ServiceBase
 {
-    public AirportsService(AppRepositories appRepositories, IMapper mapper) : base(appRepositories, mapper)
+    protected readonly string teleportHost;
+
+    public AirportsService(
+        AppRepositories appRepositories,
+        IOptions<ConfigBase> options,
+        HttpService httpService) : base(appRepositories, httpService)
     {
+        teleportHost = options?.Value?.Url ?? string.Empty;
     }
 
     public async Task<double?> GetDistance(string first, string second, CancellationToken token = default)
@@ -20,8 +28,8 @@ public class AirportsService : ServiceBase
         var secondLocation = await GetAirportLocation(second);
         if(secondLocation == null) return null;
 
-        (double lon, double lat) firstCoordinates = (firstLocation.Longitude.ConvertDegreeToRadian(), firstLocation.Lattitude.ConvertDegreeToRadian());
-        (double lon, double lat) secondCoordinates = (secondLocation.Longitude.ConvertDegreeToRadian(), secondLocation.Lattitude.ConvertDegreeToRadian());
+        (double lon, double lat) firstCoordinates = (firstLocation.Lon.ConvertDegreeToRadian(), firstLocation.Lat.ConvertDegreeToRadian());
+        (double lon, double lat) secondCoordinates = (secondLocation.Lon.ConvertDegreeToRadian(), secondLocation.Lat.ConvertDegreeToRadian());
 
         // 2 -
         var deltaLon = (firstCoordinates.lon - secondCoordinates.lon);
@@ -33,12 +41,25 @@ public class AirportsService : ServiceBase
         return Math.Round(earthRadius * calculationResult, 6);
     }
 
-    private async Task<Location> GetAirportLocation(string iata, CancellationToken token = default)
+    private async Task<LocationInfo> GetAirportLocation(string iata, CancellationToken token = default)
     {
         var airport = await appRepositories.Airport.FindFirstAsync((iatadb => iata.Equals(iatadb.Iata)), token);
-        int? locationId = airport != null ? airport.LocationId : null;
-        if (locationId == null) return null;
 
-        return await appRepositories.Locations.GetAsync(locationId.Value, token);
+        int? locationId = airport != null ? airport.LocationId : null;
+        if (locationId != null)
+        {
+            var foundLocation = await appRepositories.Locations.GetAsync(locationId.Value, token);
+            return new LocationInfo(foundLocation.Longitude, foundLocation.Lattitude);
+        }
+
+        var airportInfo = await GetAirportsFromApi(iata, token);
+        if (airportInfo != null)
+        {
+            return airportInfo.Location;
+        }
+        else return null;
     }
+
+    private async Task<AirportInfo> GetAirportsFromApi(string iata, CancellationToken token = default)
+        => await httpService.SendRequestAsync<AirportInfo>($"{teleportHost}/{iata?.ToUpper() ?? string.Empty}", HttpMethod.Get, token);
 }

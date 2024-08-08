@@ -1,18 +1,18 @@
 ﻿using Airports.DataAccess.Repo;
 using Airports.Shared.Interfaces;
-using AutoMapper;
 
 namespace Airports.BusinessLayer.Services;
 
 public abstract class ServiceBase : INotify
 {
-    protected readonly IMapper mapper;
-    protected readonly AppRepositories appRepositories;
-    public ServiceBase(AppRepositories appRepositories, IMapper mapper)
+    protected readonly AppRepositories appRepositories; 
+    protected readonly HttpService httpService;
+
+    public ServiceBase(AppRepositories appRepositories, HttpService httpService)
     {
         this.appRepositories = appRepositories;
-        this.mapper = mapper;
+        this.httpService = httpService;
     }
 
-    public string Message { get; set; } = string.Empty;
+    public string NotifyMessage => httpService?.NotifyMessage ?? string.Empty;
 }

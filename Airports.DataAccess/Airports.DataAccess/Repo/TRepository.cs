@@ -17,7 +17,7 @@ public class TRepository<T> : ITRepository<T>
 
     public TRepository(IDbContextFactory<AppDbContext> contextFactory) => this.contextFactory = contextFactory;
 
-    public string Message { get; set; } = string.Empty;
+    public string NotifyMessage { get; set; } = string.Empty;
 
     public async Task<List<T>> GetAsync(CancellationToken token = default)
         => await (await contextFactory.CreateDbContextAsync(token)).Set<T>().AsNoTracking().ToListAsync(token);
@@ -33,12 +33,12 @@ public class TRepository<T> : ITRepository<T>
         {
             result = (await context.AddAsync(entity, token)).Entity;
             await context.SaveChangesAsync(token);
-            Message = $"Операция успешно завершена. Данные добавлены в систему. ";
+            NotifyMessage = $"Операция успешно завершена. Данные добавлены в систему. ";
         }
         catch (Exception exc)
         {
             exc.LogError(GetType().Name, nameof(CreateAsync));
-            Message = $"Запись не добавлена в систему, произошла ошибка на уровне базы данных ! " +
+            NotifyMessage = $"Запись не добавлена в систему, произошла ошибка на уровне базы данных ! " +
                       $"Подробности: {exc.GetExeceptionMessages()} ! ";
             throw;
         }
@@ -54,12 +54,12 @@ public class TRepository<T> : ITRepository<T>
         {
             result = context.Update(entity).Entity;
             await context.SaveChangesAsync(token);
-            Message = $"Операция успешно завершена. Данные обновлены в системе. ";
+            NotifyMessage = $"Операция успешно завершена. Данные обновлены в системе. ";
         }
         catch (Exception exc)
         {
             exc.LogError(GetType().Name, nameof(UpdateAsync));
-            Message = $"Запись не обновлена в системе, произошла ошибка на уровне базы данных ! " +
+            NotifyMessage = $"Запись не обновлена в системе, произошла ошибка на уровне базы данных ! " +
                       $"{exc.GetExeceptionMessages()} ! ";
             throw;
         }
@@ -77,7 +77,7 @@ public class TRepository<T> : ITRepository<T>
             var item = await context.Set<T>().FindAsync(new object[] { id }, token);
             if (item == null)
             {
-                Message = $"Запись c идентификатором «{id}» отсутствует в системе. ";
+                NotifyMessage = $"Запись c идентификатором «{id}» отсутствует в системе. ";
                 return false;
             }
 
@@ -88,7 +88,7 @@ public class TRepository<T> : ITRepository<T>
         catch (Exception exc)
         {
             exc.LogError(GetType().FullName, nameof(RemoveAsync));
-            Message = $"Запись не удалена из системы, произошла ошибка на уровне базы данных ! " +
+            NotifyMessage = $"Запись не удалена из системы, произошла ошибка на уровне базы данных ! " +
                       $"{exc.GetExeceptionMessages()} ! ";
             throw;
         }

@@ -2,5 +2,5 @@
 
 public interface INotify
 {
-    string Message { get; set; }
+    string NotifyMessage { get; }
 }
