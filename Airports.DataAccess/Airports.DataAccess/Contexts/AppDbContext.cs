@@ -13,8 +13,12 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Country> Countries { get; set; }
+
     public DbSet<City> Cities { get; set; }
+
     public DbSet<Airport> Airports { get; set; }
+
+    public DbSet<Location> Locations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -56,6 +60,11 @@ public class AppDbContext : DbContext
             .WithMany(t => t.Airports)
             .HasForeignKey(p => p.CityId);
 
+        modelBuilder.Entity<Airport>()
+            .HasOne(p => p.Location)
+            .WithMany(t => t.Airports)
+            .HasForeignKey(p => p.LocationId);
+
         modelBuilder.Entity<Airport>(entity =>
         {
             entity.Property<string?>(e => e.Icao)
@@ -64,6 +73,20 @@ public class AppDbContext : DbContext
               .HasColumnType("nvarchar(25)");
             entity.Property<string?>(e => e.Name)
               .HasColumnType("nvarchar(100)");
+        });
+
+        modelBuilder.Entity<Location>()
+            .HasIndex(p => p.Longitude);
+
+        modelBuilder.Entity<Location>()
+            .HasIndex(p => p.Lattitude);
+
+        modelBuilder.Entity<Location>(entity =>
+        {
+            entity.Property<decimal>(e => e.Longitude)
+              .HasColumnType("decimal(9, 6)");
+            entity.Property<decimal>(e => e.Lattitude)
+             .HasColumnType("decimal(8, 6)");
         });
     }
 }

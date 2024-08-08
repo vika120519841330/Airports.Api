@@ -17,4 +17,9 @@ public class Airport : IataBase
     public int CityId { get; set; }
 
     public virtual City City { get; set; }
+
+    [Column("location_id")]
+    public int LocationId { get; set; }
+
+    public virtual Location Location { get; set; }
 }
