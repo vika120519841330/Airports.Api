@@ -17,7 +17,7 @@ namespace Airports.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(decimal), 200)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> GetCard([FromQuery] string first, [FromQuery] string second, [FromHeader] CancellationToken token = default)
+        public async Task<ActionResult> GetDistance([FromQuery] string first, [FromQuery] string second, [FromHeader] CancellationToken token = default)
         {
             var distance = await airportsService.GetDistance(first, second, token);
             if (distance is not null)
