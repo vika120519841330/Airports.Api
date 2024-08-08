@@ -14,6 +14,10 @@ public class AppRepositories
         this.serviceProvider = serviceProvider;
     }
 
-    public ITRepository<IataBase> Iatas => serviceProvider?.GetService<ITRepository<IataBase>>();
+    public ITRepository<Airport> Airport => serviceProvider?.GetService<ITRepository<Airport>>();
+
+    public ITRepository<City> Cities => serviceProvider?.GetService<ITRepository<City>>();
+
+    public ITRepository<Country> Countries => serviceProvider?.GetService<ITRepository<Country>>();
 
 }

@@ -6,6 +6,6 @@ public static class ServicesConfig
 {
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddTransient<IataService>();
+        services.AddTransient<AirportsService>();
     }
 }
