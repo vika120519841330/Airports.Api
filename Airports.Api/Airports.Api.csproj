@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Airports.BusinessLayer\Airports.BusinessLayer.csproj" />
-    <ProjectReference Include="..\Airports.DataAccess\Airports.DataAccess\Airports.DataAccess.csproj" />
     <ProjectReference Include="..\Airports.Shared\Airports.Shared.csproj" />
   </ItemGroup>
 
