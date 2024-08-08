@@ -10,6 +10,7 @@ public static class RepositoryConfig
     {
         services.AddTransient<ITRepository<Country>, TRepository<Country>>(); 
         services.AddTransient<ITRepository<City>, TRepository<City>>();
+        services.AddTransient<ITRepository<Location>, TRepository<Location>>();
         services.AddTransient<ITRepository<Airport>, TRepository<Airport>>();
         services.AddTransient<AppRepositories>();
     }

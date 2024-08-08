@@ -20,4 +20,6 @@ public class AppRepositories
 
     public ITRepository<Country> Countries => serviceProvider?.GetService<ITRepository<Country>>();
 
+    public ITRepository<Location> Locations => serviceProvider?.GetService<ITRepository<Location>>();
+
 }

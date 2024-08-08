@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Airports.DataAccess.Repo;
 
@@ -94,4 +95,7 @@ public class TRepository<T> : ITRepository<T>
 
         return result;
     }
+
+    public async Task<T> FindFirstAsync(Expression<Func<T, bool>> predicate, CancellationToken token = default)
+        => await(await contextFactory.CreateDbContextAsync(token)).Set<T>().AsNoTracking().FirstOrDefaultAsync(predicate, token);
 }

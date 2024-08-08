@@ -23,10 +23,6 @@
 		<PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Airports.DataAccess\Airports.DataAccess\Airports.DataAccess.csproj" />
     <ProjectReference Include="..\Airports.Shared\Airports.Shared.csproj" />

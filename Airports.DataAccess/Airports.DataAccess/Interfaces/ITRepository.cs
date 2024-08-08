@@ -1,5 +1,7 @@
 ﻿using Airports.Shared.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,4 +19,6 @@ public interface ITRepository<T> : INotify
     Task<T> UpdateAsync(T entity, CancellationToken token = default);
 
     Task<bool> RemoveAsync(int id, CancellationToken token = default);
+
+    Task<T> FindFirstAsync(Expression<Func<T, bool>> predicate, CancellationToken token = default);
 }
