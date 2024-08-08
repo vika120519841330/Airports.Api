@@ -9,6 +9,7 @@ namespace Airports.DataAccess.Models.DbModels;
 public class Country : IataBase
 {
     [Key]
+    [Column("id")]
     public int Id { get; set; }
 
     public virtual List<City> Cities { get; set; } = new();

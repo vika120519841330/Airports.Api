@@ -22,6 +22,14 @@ public class AppDbContext : DbContext
             .HasIndex(p => p.Iata)
             .IsUnique();
 
+        modelBuilder.Entity<Country>(entity =>
+        {
+            entity.Property<string>(e => e.Iata)
+              .HasColumnType("nvarchar(25)");
+            entity.Property<string?>(e => e.Name)
+              .HasColumnType("nvarchar(100)");
+        });
+
         modelBuilder.Entity<City>()
             .HasIndex(p => p.Iata)
             .IsUnique();
@@ -31,6 +39,14 @@ public class AppDbContext : DbContext
             .WithMany(t => t.Cities)
             .HasForeignKey(p => p.CountryId);
 
+        modelBuilder.Entity<City>(entity =>
+        {
+            entity.Property<string>(e => e.Iata)
+              .HasColumnType("nvarchar(25)");
+            entity.Property<string?>(e => e.Name)
+              .HasColumnType("nvarchar(100)");
+        });
+
         modelBuilder.Entity<Airport>()
             .HasIndex(p => p.Iata)
             .IsUnique();
@@ -39,5 +55,15 @@ public class AppDbContext : DbContext
             .HasOne(p => p.City)
             .WithMany(t => t.Airports)
             .HasForeignKey(p => p.CityId);
+
+        modelBuilder.Entity<Airport>(entity =>
+        {
+            entity.Property<string?>(e => e.Icao)
+              .HasColumnType("nvarchar(25)");
+            entity.Property<string>(e => e.Iata)
+              .HasColumnType("nvarchar(25)");
+            entity.Property<string?>(e => e.Name)
+              .HasColumnType("nvarchar(100)");
+        });
     }
 }

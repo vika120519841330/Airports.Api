@@ -7,10 +7,13 @@ namespace Airports.DataAccess.Models.DbModels;
 public class Airport : IataBase
 {
     [Key]
+    [Column("id")]
     public int Id { get; set; }
 
-    public string Icao { get; set; }
+    [Column("icao")]
+    public string? Icao { get; set; }
 
+    [Column("city_id")]
     public int CityId { get; set; }
 
     public virtual City City { get; set; }
