@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	 <PackageReference Include="AutoMapper" Version="13.0.1" />
+	 <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+	 <PackageReference Include="Serilog" Version="4.0.0" />
+	 <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+	 <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0" />
+	 <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+	 <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+	 <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+	 <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.2" />
+	 <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+	 <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+	 <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />	  
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Airports.BusinessLayer\Airports.BusinessLayer.csproj" />
+    <ProjectReference Include="..\Airports.DataAccess\Airports.DataAccess\Airports.DataAccess.csproj" />
+    <ProjectReference Include="..\Airports.Shared\Airports.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

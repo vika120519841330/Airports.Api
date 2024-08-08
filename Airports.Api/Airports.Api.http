@@ -1,0 +1,6 @@
+@Airports.Api_HostAddress = http://localhost:5101
+
+GET {{Airports.Api_HostAddress}}/airports/
+Accept: application/json
+
+###
